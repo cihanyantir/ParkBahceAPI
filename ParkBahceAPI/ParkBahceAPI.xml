@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ParkBahceAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ParkBahceAPI.Controllers.MilletBahcesiController.GetMilletBahcesi">
+            <summary>
+            Millet Bahcesi Listesi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ParkBahceAPI.Controllers.MilletBahcesiController.GetMilletBahcesi(System.Int32)">
+            <summary>
+            ID'ye göre millet bahcesi
+            </summary>
+            <param name="milletbahcesiID">Seçilen ID</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
