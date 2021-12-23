@@ -13,6 +13,9 @@ namespace ParkBahceAPI.MilletMapper
         public MilletMappings()
         {
             CreateMap<MilletBahcesi, MilletBahcesiDTO>().ReverseMap();
+            CreateMap<Trail, TrailDTO>().ReverseMap();
+            CreateMap<Trail, TrailCreateDTO>().ReverseMap();
+            CreateMap<Trail, TrailUpdateDTO>().ReverseMap();
 
 
         }
