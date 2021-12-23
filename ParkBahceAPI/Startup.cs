@@ -36,12 +36,14 @@ namespace ParkBahceAPI
         {
             services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IMilletBahcesiRepository, MilletBahcesiRepository>();
+            services.AddScoped<ITrailRepository, TrailRepository>();
             services.AddAutoMapper(typeof(MilletMappings));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkBahceAPI", Version = "v1" });
+                c.SwaggerDoc("ParkBahceAPIMilletBahcesi", new OpenApiInfo { Title = "ParkBahceAPI-MilletBahcesi", Version = "v1" });
+                c.SwaggerDoc("ParkBahceAPITrail", new OpenApiInfo { Title = "ParkBahceAPI-Trail", Version = "v1" });
                 var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
                 c.IncludeXmlComments(cmlCommentsFullPath); //addxml
@@ -58,7 +60,10 @@ namespace ParkBahceAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ParkBahceAPI v1"); });
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/ParkBahceAPIMilletBahcesi/swagger.json", "ParkBahceAPI Millet");
+                    c.SwaggerEndpoint("/swagger/ParkBahceAPITrail/swagger.json", "ParkBahceAPI Trail");
+                });
+
             }
 
             app.UseHttpsRedirection();
