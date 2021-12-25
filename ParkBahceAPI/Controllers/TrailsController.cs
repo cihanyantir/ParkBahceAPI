@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace ParkBahceAPI.Controllers
 {
-    [Route("api/Trails")]
-    [ApiExplorerSettings(GroupName = "ParkBahceAPITrail")]
+    [Route("api/v{version:apiVersion}/trails")]
+    //[ApiExplorerSettings(GroupName = "ParkBahceAPITrail")]
     [ApiController]
     public class TrailsController : Controller
     {
@@ -57,6 +57,28 @@ namespace ParkBahceAPI.Controllers
             var objdto = _mapper.Map<TrailDTO>(obj); //no foreach needed just 1 column
             return Ok(objdto);
         }
+
+
+        [HttpGet("[action]/{milletbahcesiID:int}")]
+        public IActionResult GetTrailInMilletBahcesi(int milletbahcesiID)
+        {
+            var obj = _trailrepo.GetTrailInNationalPark(milletbahcesiID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            var objdto = new List<TrailDTO>();
+                   
+            foreach (var item in obj)
+            {
+                objdto.Add( _mapper.Map<TrailDTO>(item));
+            }
+         
+            return Ok(objdto);
+        }
+
+
+
         [HttpPost]
         public IActionResult CreateTrail([FromBody] TrailCreateDTO trailDTO)
         {

@@ -10,9 +10,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ParkBahceAPI.Controllers
-{
-    [Route("api/[controller]")]
+{ [Route("api/v{version:apiVersion}/milletbahcesi")]
+  
+    //[Route("api/[controller]")]
     [ApiController]
+    //[ApiExplorerSettings(GroupName = "ParkBahceAPIMilletBahcesi")]
     public class MilletBahcesiController : Controller
     {
         private IMilletBahcesiRepository _mbRepo;
@@ -32,7 +34,9 @@ namespace ParkBahceAPI.Controllers
         {
             var objList = _mbRepo.GetMilletBahcesis();
             var objdto = new List<MilletBahcesiDTO>();
-            foreach (var obj in objList)
+            foreach (var obj in objList) 
+                //objlistteki veriler mapper.csda maplanan classa dtodan üretilen nesneyle ekleniyor.
+                //veriler dtodan çekilmiş oluyor.
             {
                 objdto.Add(_mapper.Map<MilletBahcesiDTO>(obj));
 
@@ -74,7 +78,7 @@ namespace ParkBahceAPI.Controllers
                 ModelState.AddModelError("", $"  {dtoobj.Name} objesini kaydederken hata oluştu");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetMilletBahcesi", new { milletbahcesiID = milletBahcesiDTO.Id }, dtoobj);
+            return CreatedAtRoute("GetMilletBahcesi", new {version=HttpContext.GetRequestedApiVersion().ToString(), milletbahcesiID = milletBahcesiDTO.Id }, dtoobj);
 
         }
         [HttpPatch("{milletbahcesiID:int}", Name = "UpdateMilletBahcesi")]
