@@ -19,6 +19,9 @@ using AutoMapper;
 using ParkBahceAPI.MilletMapper;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ParkBahceAPI
 {
@@ -38,31 +41,46 @@ namespace ParkBahceAPI
             services.AddScoped<IMilletBahcesiRepository, MilletBahcesiRepository>();
             services.AddScoped<ITrailRepository, TrailRepository>();
             services.AddAutoMapper(typeof(MilletMappings));
+            services.AddApiVersioning(c =>
+            {
+                c.AssumeDefaultVersionWhenUnspecified = true;
+                c.DefaultApiVersion = new ApiVersion(1, 0);
+                c.ReportApiVersions = true;
+
+            });
+            services.AddVersionedApiExplorer(c => c.GroupNameFormat = "'v'VVV");
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("ParkBahceAPIMilletBahcesi", new OpenApiInfo { Title = "ParkBahceAPI-MilletBahcesi", Version = "v1" });
-                c.SwaggerDoc("ParkBahceAPITrail", new OpenApiInfo { Title = "ParkBahceAPI-Trail", Version = "v1" });
-                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
-                c.IncludeXmlComments(cmlCommentsFullPath); //addxml
-            }
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("ParkBahceAPI", new OpenApiInfo { Title = "ParkBahceAPI", Version = "v1" });
+            //    //c.SwaggerDoc("ParkBahceAPITrail", new OpenApiInfo { Title = "ParkBahceAPI-Trail", Version = "v1" });
+            //    var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+            //    c.IncludeXmlComments(cmlCommentsFullPath); //addxml
+            //}
             
                
-            );
+            //);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/ParkBahceAPIMilletBahcesi/swagger.json", "ParkBahceAPI Millet");
-                    c.SwaggerEndpoint("/swagger/ParkBahceAPITrail/swagger.json", "ParkBahceAPI Trail");
+                 app.UseSwaggerUI(c => {  foreach (var desc in provider.ApiVersionDescriptions)
+                         c.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json",
+                         desc.GroupName.ToUpperInvariant());
+                  
                 });
+                //app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/ParkBahceAPI/swagger.json", "ParkBahceAPI");
+                //    //c.SwaggerEndpoint("/swagger/ParkBahceAPITrail/swagger.json", "ParkBahceAPI Trail");
+                //});
 
             }
 
