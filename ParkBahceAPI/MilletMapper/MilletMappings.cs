@@ -16,9 +16,6 @@ namespace ParkBahceAPI.MilletMapper
             CreateMap<Trail, TrailDTO>().ReverseMap();
             CreateMap<Trail, TrailCreateDTO>().ReverseMap();
             CreateMap<Trail, TrailUpdateDTO>().ReverseMap();
-            CreateMap<SosyalTesis, SosyalTesisDTO>().ReverseMap();
-            CreateMap<SosyalTesis, SosyalTesisUpdateDTO>().ReverseMap();
-            CreateMap<SosyalTesis, SosyalTesisCreateDTO>().ReverseMap();
 
 
         }

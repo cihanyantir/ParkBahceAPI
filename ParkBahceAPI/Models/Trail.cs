@@ -17,7 +17,7 @@ namespace ParkBahceAPI.Models
         public double Distance { get; set; }
         public enum DifficultType { Easy,Moderate,Difficult,Expert}
         public DifficultType Difficulty { get; set; }
-        public int MilletBahcesiId { get; set; } //means x=>x.MilletBahcesi.MilletBahcesiId
+        public int MilletBahcesiId { get; set; }
         [ForeignKey("MilletBahcesiId")] //ef 5.0 can do it easily
         public MilletBahcesi MilletBahcesi { get; set; }
         public DateTime DateCreated { get; set; }

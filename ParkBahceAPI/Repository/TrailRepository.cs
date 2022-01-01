@@ -72,7 +72,7 @@ namespace ParkBahceAPI.Repository
             return Save();
         }
 
-        public ICollection<Trail> GetTrailInMilletBahcesi(int mbID)
+        public ICollection<Trail> GetTrailInNationalPark(int mbID)
         {
             return _db.Trails.Include(x => x.MilletBahcesi).Where(x => x.MilletBahcesiId == mbID).ToList();
         }

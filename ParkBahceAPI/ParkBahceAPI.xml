@@ -17,37 +17,5 @@
             <param name="milletbahcesiID">Seçilen ID</param>
             <returns></returns>
         </member>
-        <member name="M:ParkBahceAPI.Controllers.MilletBahcesiV2Controller.GetMilletBahcesi">
-            <summary>
-            Millet Bahcesi Listesi
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ParkBahceAPI.Controllers.SosyalTesisController.GetSosyalTesis">
-            <summary>
-            SosyalTesis Listesi
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ParkBahceAPI.Controllers.SosyalTesisController.GetSosyalTesis(System.Int32)">
-            <summary>
-            ID'ye göre SosyalTesis
-            </summary>
-            <param name="SosyalTesisID">Seçilen ID</param>
-            <returns></returns>
-        </member>
-        <member name="M:ParkBahceAPI.Controllers.TrailsController.GetTrails">
-            <summary>
-            Trail Listesi
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ParkBahceAPI.Controllers.TrailsController.GetTrail(System.Int32)">
-            <summary>
-            ID'ye göre Trail
-            </summary>
-            <param name="TrailID">Seçilen ID</param>
-            <returns></returns>
-        </member>
     </members>
 </doc>

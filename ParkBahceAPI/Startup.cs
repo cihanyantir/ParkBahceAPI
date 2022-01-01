@@ -40,8 +40,6 @@ namespace ParkBahceAPI
             services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IMilletBahcesiRepository, MilletBahcesiRepository>();
             services.AddScoped<ITrailRepository, TrailRepository>();
-            services.AddScoped<ISosyalTesisRepository, SosyalTesisRepository>();
-
             services.AddAutoMapper(typeof(MilletMappings));
             services.AddApiVersioning(c =>
             {
@@ -78,7 +76,6 @@ namespace ParkBahceAPI
                  app.UseSwaggerUI(c => {  foreach (var desc in provider.ApiVersionDescriptions)
                          c.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json",
                          desc.GroupName.ToUpperInvariant());
-
                   
                 });
                 //app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/ParkBahceAPI/swagger.json", "ParkBahceAPI");

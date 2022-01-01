@@ -4,14 +4,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ParkWeb.Repository;
-using ParkWeb.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using ParkWeb.Mapper;
 
 namespace ParkWeb
 {
@@ -27,11 +23,7 @@ namespace ParkWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IMilletBahcesiRepository, MilletBahcesiRepository>();
-            services.AddScoped<ISosyalTesisRepository, SosyalTesisRepository>();
-            services.AddAutoMapper(typeof(WebMappings));
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddHttpClient();
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

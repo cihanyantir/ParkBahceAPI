@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ParkWeb.Models;
-using ParkWeb.Models.ViewModel;
-using ParkWeb.Repository;
-using ParkWeb.Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,25 +12,15 @@ namespace ParkWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IMilletBahcesiRepository _mbrepo;
-        private readonly ISosyalTesisRepository _strepo;
 
-        public HomeController(ILogger<HomeController> logger, IMilletBahcesiRepository mbrepo, ISosyalTesisRepository strepo)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _mbrepo = mbrepo;
-            _strepo = strepo;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            IndexVM listofmilletandsosyaltesis = new IndexVM()
-            {
-                MilletBahcesiList = await _mbrepo.GetAllAsync(SD.MilletBahcesiAPIPath),
-                SosyalTesisList = await _strepo.GetAllAsync(SD.SosyalTesisAPIPath),
-            };
-
-            return View(listofmilletandsosyaltesis);
+            return View();
         }
 
         public IActionResult Privacy()

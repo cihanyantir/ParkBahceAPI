@@ -48,36 +48,6 @@ namespace ParkBahceAPI.Migrations
                     b.ToTable("MilletBahcesis");
                 });
 
-            modelBuilder.Entity("ParkBahceAPI.Models.SosyalTesis", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Doluluk")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MilletBahcesiId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Picture")
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MilletBahcesiId");
-
-                    b.ToTable("SosyalTesiss");
-                });
-
             modelBuilder.Entity("ParkBahceAPI.Models.Trail", b =>
                 {
                     b.Property<int>("Id")
@@ -106,17 +76,6 @@ namespace ParkBahceAPI.Migrations
                     b.HasIndex("MilletBahcesiId");
 
                     b.ToTable("Trails");
-                });
-
-            modelBuilder.Entity("ParkBahceAPI.Models.SosyalTesis", b =>
-                {
-                    b.HasOne("ParkBahceAPI.Models.MilletBahcesi", "MilletBahcesi")
-                        .WithMany()
-                        .HasForeignKey("MilletBahcesiId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MilletBahcesi");
                 });
 
             modelBuilder.Entity("ParkBahceAPI.Models.Trail", b =>
