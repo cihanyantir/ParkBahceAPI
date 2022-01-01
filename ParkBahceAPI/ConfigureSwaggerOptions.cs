@@ -36,6 +36,7 @@ namespace ParkBahceAPI
             var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
             options.IncludeXmlComments(cmlCommentsFullPath); //addxml
+            options.CustomSchemaIds(type => type.ToString());
         }
 
        

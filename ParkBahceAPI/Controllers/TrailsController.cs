@@ -62,7 +62,7 @@ namespace ParkBahceAPI.Controllers
         [HttpGet("[action]/{milletbahcesiID:int}")]
         public IActionResult GetTrailInMilletBahcesi(int milletbahcesiID)
         {
-            var obj = _trailrepo.GetTrailInNationalPark(milletbahcesiID);
+            var obj = _trailrepo.GetTrailInMilletBahcesi(milletbahcesiID);
             if (obj == null)
             {
                 return NotFound();
