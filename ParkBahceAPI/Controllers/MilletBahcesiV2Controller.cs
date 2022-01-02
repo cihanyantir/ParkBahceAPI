@@ -15,7 +15,7 @@ namespace ParkBahceAPI.Controllers
     [ApiVersion("2.0")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkBahceAPIMilletBahcesi")]
-    public class MilletBahcesiV2Controller : Controller
+    public class MilletBahcesiV2Controller : ControllerBase
     {
         private IMilletBahcesiRepository _mbRepo;
         private readonly IMapper _mapper;

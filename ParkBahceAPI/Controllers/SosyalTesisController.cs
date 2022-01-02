@@ -14,7 +14,7 @@ namespace ParkBahceAPI.Controllers
     [Route("api/v{version:apiVersion}/SosyalTesis")]
     //[ApiExplorerSettings(GroupName = "ParkBahceAPISosyalTesis")]
     [ApiController]
-    public class SosyalTesisController : Controller
+    public class SosyalTesisController : ControllerBase
     {
         private ISosyalTesisRepository _SosyalTesisrepo;
         private readonly IMapper _mapper;

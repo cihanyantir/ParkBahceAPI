@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkBahceAPI.Abstract;
@@ -15,7 +16,7 @@ namespace ParkBahceAPI.Controllers
     //[Route("api/[controller]")]
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkBahceAPIMilletBahcesi")]
-    public class MilletBahcesiController : Controller
+    public class MilletBahcesiController : ControllerBase
     {
         private IMilletBahcesiRepository _mbRepo;
         private readonly IMapper _mapper;
@@ -49,6 +50,7 @@ namespace ParkBahceAPI.Controllers
         /// </summary>
         /// <param name="milletbahcesiID">Seçilen ID</param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("{milletbahcesiID:int}", Name = "GetMilletBahcesi")]
         public IActionResult GetMilletBahcesi(int milletbahcesiID)
         {
