@@ -9,7 +9,7 @@ namespace ParkBahceAPI.Abstract
     public interface ITrailRepository
     {
         ICollection<Trail> GetTrails();
-        ICollection<Trail> GetTrailInNationalPark(int mbID);
+        ICollection<Trail> GetTrailInMilletBahcesi(int mbID);
         Trail GetTrail(int TrailID);
         bool TrailExist(string name);
         bool TrailExist(int id);
