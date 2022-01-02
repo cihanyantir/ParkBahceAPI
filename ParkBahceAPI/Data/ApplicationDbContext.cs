@@ -16,6 +16,7 @@ namespace ParkBahceAPI.Data
         public DbSet<MilletBahcesi> MilletBahcesis { get; set; }
         public DbSet<Trail> Trails { get; set; }
         public DbSet<SosyalTesis> SosyalTesiss { get; set; }
+        public DbSet <User> Users { get; set; }
     }
   
 }
