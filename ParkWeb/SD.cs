@@ -10,5 +10,6 @@ namespace ParkWeb
         public static string APIBaseUrl = "https://localhost:44300/";
         public static string MilletBahcesiAPIPath =APIBaseUrl+ "api/v1/milletbahcesi/";
         public static string SosyalTesisAPIPath = APIBaseUrl + "api/v1/sosyaltesis/";
+        public static string AccountAPIPath = APIBaseUrl + "api/v1/user/";
     }
 }
