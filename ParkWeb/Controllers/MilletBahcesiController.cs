@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ParkWeb.Models;
 using ParkWeb.Repository.IRepository;
 using System;
@@ -8,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ParkWeb.Controllers
-{
+{ [Authorize]
     public class MilletBahcesiController : Controller
     {
         private readonly IMilletBahcesiRepository _mbRepo;
@@ -27,9 +29,10 @@ namespace ParkWeb.Controllers
         }
         public async Task<IActionResult> GetAllMilletBahcesi()
         {
-            return Json(new { data = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath) });
+            return Json(new { data = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath, HttpContext.Session.GetString("JWToken")) });
         }
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Upsert(int? id) //one column
         {
             MilletBahcesi mlt = new MilletBahcesi();//id yoksa create, varsa update
@@ -37,7 +40,7 @@ namespace ParkWeb.Controllers
             {
                 return View(mlt);
             }
-            mlt = await _mbRepo.GetAsync(SD.MilletBahcesiAPIPath, id.GetValueOrDefault());
+            mlt = await _mbRepo.GetAsync(SD.MilletBahcesiAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
             if(mlt==null)
             {
                 return NotFound();
@@ -45,7 +48,7 @@ namespace ParkWeb.Controllers
             return View(mlt);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //For Attacks but do I need?
         public async Task<IActionResult> Upsert(MilletBahcesi obj)
         { if (ModelState.IsValid)
             {
@@ -68,13 +71,13 @@ namespace ParkWeb.Controllers
                 {
                     if (obj.Id != 0)
                     {
-                        var onjfromDb = await _mbRepo.GetAsync(SD.MilletBahcesiAPIPath, obj.Id);
+                        var onjfromDb = await _mbRepo.GetAsync(SD.MilletBahcesiAPIPath, obj.Id, HttpContext.Session.GetString("JWToken"));
 
                         obj.Picture = onjfromDb.Picture;
                     }
                     else
                     {
-                        byte[] p1 = null; 
+                        byte[] p1 = null;
                         obj.Picture = p1; //bakılacak
                     }
 
@@ -82,11 +85,11 @@ namespace ParkWeb.Controllers
                 }
                 if (obj.Id == 0)
                 {
-                    await _mbRepo.CreateAsync(SD.MilletBahcesiAPIPath, obj);
+                    await _mbRepo.CreateAsync(SD.MilletBahcesiAPIPath, obj, HttpContext.Session.GetString("JWToken"));
                 }
                 else
                 {
-                    await _mbRepo.UpdateAsync(SD.MilletBahcesiAPIPath + obj.Id, obj);
+                    await _mbRepo.UpdateAsync(SD.MilletBahcesiAPIPath + obj.Id, obj, HttpContext.Session.GetString("JWToken"));
                 }
                 return RedirectToAction("Index"); 
 
@@ -98,7 +101,7 @@ namespace ParkWeb.Controllers
      
         public async Task<IActionResult> Delete(int id)
         {
-          var success=await _mbRepo.DeleteAsync(SD.MilletBahcesiAPIPath, id);
+          var success=await _mbRepo.DeleteAsync(SD.MilletBahcesiAPIPath, id, HttpContext.Session.GetString("JWToken"));
             if(success)
             return Json(new { success = true, message = "Başarıyla Silindi" });
             return Json(new { success = false, message = "Silinemedi" });

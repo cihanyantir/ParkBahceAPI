@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ParkWeb.Models;
 using ParkWeb.Models.ViewModel;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace ParkWeb.Controllers
 {
+    [Authorize]
     public class SosyalTesisController : Controller
     {
        
@@ -32,12 +35,13 @@ namespace ParkWeb.Controllers
             }
             public async Task<IActionResult> GetAllSosyalTesis()
             {
-                return Json(new { data = await _stRepo.GetAllAsync(SD.SosyalTesisAPIPath) });
+                return Json(new { data = await _stRepo.GetAllAsync(SD.SosyalTesisAPIPath, HttpContext.Session.GetString("JWToken")) });
             }
             [HttpGet]
-            public async Task<IActionResult> Upsert(int? id) //one column
+        
+        public async Task<IActionResult> Upsert(int? id) //one column
             {   //All in mblist, so you can set text,value to MilletBahcesiList
-                IEnumerable<MilletBahcesi> mblist = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath);
+                IEnumerable<MilletBahcesi> mblist = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath, HttpContext.Session.GetString("JWToken"));
 
 
             List<SelectListItem> categories = (from x in mblist
@@ -61,7 +65,7 @@ namespace ParkWeb.Controllers
                 return View(objvs);
             }
             //Can use sosyaltesis again by using SosyalTesis SosyalTesis {get;Set;}
-            var objvm= await _stRepo.GetAsync(SD.SosyalTesisAPIPath, id.GetValueOrDefault());
+            var objvm= await _stRepo.GetAsync(SD.SosyalTesisAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
                 if (objvm == null)
                 {
                     return NotFound();
@@ -70,7 +74,8 @@ namespace ParkWeb.Controllers
             }
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Upsert(SosyalTesis obj)
+       
+        public async Task<IActionResult> Upsert(SosyalTesis obj)
             {
             
                 if (ModelState.IsValid)
@@ -92,7 +97,7 @@ namespace ParkWeb.Controllers
                 }
                 else
                 {
-                    var onjfromDb = await _stRepo.GetAsync(SD.SosyalTesisAPIPath, obj.Id);
+                    var onjfromDb = await _stRepo.GetAsync(SD.SosyalTesisAPIPath, obj.Id, HttpContext.Session.GetString("JWToken"));
                     if (obj.Id != 0)
                         obj.Picture = onjfromDb.Picture;
 
@@ -100,18 +105,18 @@ namespace ParkWeb.Controllers
                 }
                 if (obj.Id == 0)
                     {
-                        await _stRepo.CreateAsync(SD.SosyalTesisAPIPath, obj);
+                        await _stRepo.CreateAsync(SD.SosyalTesisAPIPath, obj, HttpContext.Session.GetString("JWToken"));
                     }
                     else
                     {
-                        await _stRepo.UpdateAsync(SD.SosyalTesisAPIPath + obj.Id, obj);
+                        await _stRepo.UpdateAsync(SD.SosyalTesisAPIPath + obj.Id, obj, HttpContext.Session.GetString("JWToken"));
                     } 
                 return RedirectToAction("Index");
 
                 }
             else
             {
-                IEnumerable<MilletBahcesi> mblist = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath);
+                IEnumerable<MilletBahcesi> mblist = await _mbRepo.GetAllAsync(SD.MilletBahcesiAPIPath, HttpContext.Session.GetString("JWToken"));
                 List<SelectListItem> categories = (from x in mblist
                                                    select new SelectListItem
                                                    { Text = x.Name, Value = x.Id.ToString() }).ToList();
@@ -125,10 +130,10 @@ namespace ParkWeb.Controllers
 
         }
             [HttpDelete]
-
-            public async Task<IActionResult> Delete(int id)
+        
+        public async Task<IActionResult> Delete(int id)
             {
-                var success = await _mbRepo.DeleteAsync(SD.SosyalTesisAPIPath, id);
+                var success = await _mbRepo.DeleteAsync(SD.SosyalTesisAPIPath, id, HttpContext.Session.GetString("JWToken"));
                 if (success)
                     return Json(new { success = true, message = "Başarıyla Silindi" });
                 return Json(new { success = false, message = "Silinemedi" });
