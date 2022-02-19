@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using ParkWeb.Repository;
 using ParkWeb.Repository.IRepository;
@@ -12,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ParkWeb.Mapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ParkWeb
 {
@@ -27,12 +30,55 @@ namespace ParkWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie
+                (
+                options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.LoginPath = "/Home/Login";
+                    options.AccessDeniedPath = "/Home/AccessDenied";
+                    options.SlidingExpiration = true;
+                });
+
+
+
+            services.AddHttpContextAccessor();
             services.AddScoped<IMilletBahcesiRepository, MilletBahcesiRepository>();
             services.AddScoped<ISosyalTesisRepository, SosyalTesisRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAutoMapper(typeof(WebMappings));
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpClient();
+            services.AddSession(options =>      //ADDED SESSION **************************************************
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+
+
+
+
+            });
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,9 +97,16 @@ namespace ParkWeb
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); //ADDED CORS
+            app.UseSession();
 
-            app.UseAuthorization();
 
+            
+
+
+                app.UseAuthentication(); //AUTHENTICATION
+                app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,49 @@ namespace ParkBahceAPI
                   });
 
             }
+            ///////////////////SWAGGER BEARER//////////////////////////////
+           
+
+            options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Description = "JWT AUTH Header using the Bearer Scheme. \r\n\r\n Enter Bearer",
+                Name = "Authorization",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+
+            options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+            {
+                {
+                new OpenApiSecurityScheme   //By OpenApiSecurity Class
+                {
+                    Reference=new OpenApiReference
+                    {
+                        Type=ReferenceType.SecurityScheme,
+                        Id="Bearer"
+                    },
+                    Scheme="oauth2",
+                    Name="Bearer",
+                    In=ParameterLocation.Header,
+                },
+                new List<string>() }
+
+                });
+        
+
+
+
+
+
+            
+                
+                
+                
+                
+
+
             var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
             options.IncludeXmlComments(cmlCommentsFullPath); //addxml
