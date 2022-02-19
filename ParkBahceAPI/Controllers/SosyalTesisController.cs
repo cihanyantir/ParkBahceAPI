@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkBahceAPI.Abstract;
@@ -29,6 +30,7 @@ namespace ParkBahceAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        
         public IActionResult GetSosyalTesis()
         {
             var objList = _SosyalTesisrepo.GetSosyalTesiss();
@@ -47,6 +49,7 @@ namespace ParkBahceAPI.Controllers
         /// <param name="SosyalTesisID">Seçilen ID</param>
         /// <returns></returns>
         [HttpGet("{SosyalTesisID:int}", Name = "GetSosyalTesis")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetSosyalTesis(int SosyalTesisID)
         {
             var obj = _SosyalTesisrepo.GetSosyalTesis(SosyalTesisID);
@@ -60,6 +63,7 @@ namespace ParkBahceAPI.Controllers
 
 
         [HttpGet("[action]/{milletbahcesiID:int}")]
+        
         public IActionResult GetSosyalTesisInMilletBahcesi(int milletbahcesiID)
         {
             var obj = _SosyalTesisrepo.GetSosyalTesisInMilletBahcesi(milletbahcesiID);
@@ -80,6 +84,7 @@ namespace ParkBahceAPI.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateSosyalTesis([FromBody] SosyalTesisCreateDTO SosyalTesisDTO)
         {
             if (SosyalTesisDTO == null)
@@ -104,6 +109,7 @@ namespace ParkBahceAPI.Controllers
 
         }
         [HttpPatch("{SosyalTesisID:int}", Name = "UpdateSosyalTesis")]
+        [Authorize(Roles = "Admin")]
 
         public IActionResult UpdateSosyalTesis(int SosyalTesisID, [FromBody] SosyalTesisUpdateDTO SosyalTesisDTO)
         {
@@ -122,6 +128,7 @@ namespace ParkBahceAPI.Controllers
 
         }
         [HttpDelete("{SosyalTesisID:int}", Name = "DeleteSosyalTesis")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteSosyalTesis(int SosyalTesisID)
         {
             if(!_SosyalTesisrepo.SosyalTesisExist(SosyalTesisID))
